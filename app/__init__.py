@@ -7,6 +7,8 @@ from app.db.models import User
 import flask_login
 from flask_bootstrap import Bootstrap5
 login_manager = flask_login.LoginManager()
+from app.simple_pages import simple_pages
+from app.auth import auth
 
 def page_not_found(e):
     return render_template("404.html"), 404
@@ -22,7 +24,10 @@ def create_app():
     db_dir = "database/db.sqlite"
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + os.path.abspath(db_dir)
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.register_blueprint(simple_pages)
+    app.register_blueprint(auth)
     db.init_app(app)
+
     # add command function to cli commands
     app.cli.add_command(create_database)
 
