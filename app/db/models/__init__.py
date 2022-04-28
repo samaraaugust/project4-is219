@@ -3,7 +3,26 @@ from datetime import datetime
 from werkzeug.security import check_password_hash, generate_password_hash
 from app.db import db
 from flask_login import UserMixin
+from sqlalchemy.orm import relationship
 
+class Recipes(db.Model):
+    __tablename__ = 'recipes'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(120), unique=True, nullable=False)
+    description = db.Column(db.String(300), unique=False, nullable=False)
+    image = db.Column(db.LargeBinary, unique=False, nullable=False)
+    ingredients = db.Column(db.String(300), unique=False, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = relationship("User", back_populates="bank", uselist=False)
+
+    def get_id(self):
+        return self.id
+
+    def __init__(self, title, description, image, ingredients):
+        self.title = title
+        self.description = description
+        self.image = image
+        self.ingredients = ingredients
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -16,7 +35,7 @@ class User(UserMixin, db.Model):
     registered_on = db.Column('registered_on', db.DateTime)
     active = db.Column('is_active', db.Boolean(), nullable=False, server_default='1')
     is_admin = db.Column('is_admin', db.Boolean(), nullable=False, server_default='0')
-
+    recipes = db.relationship("Recipes", back_populates="user", cascade="all, delete")
     # `roles` and `groups` are reserved words that *must* be defined
     # on the `User` model to use group- or role-based authorization.
 
