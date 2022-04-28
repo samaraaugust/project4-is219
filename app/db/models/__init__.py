@@ -9,11 +9,11 @@ class Recipes(db.Model):
     __tablename__ = 'recipes'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), unique=True, nullable=False)
-    description = db.Column(db.String(300), unique=False, nullable=False)
+    description = db.Column(db.String(500), unique=False, nullable=False)
     image = db.Column(db.LargeBinary, unique=False, nullable=False)
-    ingredients = db.Column(db.String(300), unique=False, nullable=False)
+    ingredients = db.Column(db.String(500), unique=False, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    user = relationship("User", back_populates="bank", uselist=False)
+    user = relationship("User", back_populates="recipes", uselist=False)
 
     def get_id(self):
         return self.id
