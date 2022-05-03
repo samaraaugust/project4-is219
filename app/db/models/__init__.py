@@ -34,10 +34,10 @@ class Recipes(db.Model):
     def get_id(self):
         return self.id
 
-    def __init__(self, title, description, image, ingredients):
+    def __init__(self, title, description, image_id, ingredients):
         self.title = title
         self.description = description
-        self.image = image
+        self.image_id = image_id
         self.ingredients = ingredients
 
 class User(UserMixin, db.Model):
