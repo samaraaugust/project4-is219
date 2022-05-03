@@ -11,7 +11,7 @@ class Image(db.Model):
     img = db.Column(db.Text, unique=True, nullable=False)
     name = db.Column(db.Text, nullable=False)
     mimetype = db.Column(db.Text, nullable=False)
-
+    recipes = db.relationship("Recipes", back_populates="image", cascade="all, delete")
     def get_id(self):
         return self.id
 
