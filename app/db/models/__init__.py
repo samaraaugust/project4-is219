@@ -5,15 +5,31 @@ from app.db import db
 from flask_login import UserMixin
 from sqlalchemy.orm import relationship
 
+class Image(db.Model):
+    __tablename__ = 'image'
+    id = db.Column(db.Integer, primary_key=True)
+    img = db.Column(db.Text, unique=True, nullable=False)
+    name = db.Column(db.Text, nullable=False)
+    mimetype = db.Column(db.Text, nullable=False)
+
+    def get_id(self):
+        return self.id
+
+    def __init__(self, img, name, mimetype):
+        self.img = img
+        self.name = name
+        self.mimetype = mimetype
+
 class Recipes(db.Model):
     __tablename__ = 'recipes'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(120), unique=True, nullable=False)
-    description = db.Column(db.String(500), unique=False, nullable=False)
-    image = db.Column(db.LargeBinary, unique=False, nullable=False)
-    ingredients = db.Column(db.String(500), unique=False, nullable=False)
+    title = db.Column(db.Text, unique=True, nullable=False)
+    description = db.Column(db.Text, unique=False, nullable=False)
+    ingredients = db.Column(db.Text, unique=False, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user = relationship("User", back_populates="recipes", uselist=False)
+    image_id = db.Column(db.Integer, db.ForeignKey('image.id'))
+    image = relationship("Image", back_populates="recipes", uselist=False)
 
     def get_id(self):
         return self.id

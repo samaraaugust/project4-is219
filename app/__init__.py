@@ -8,6 +8,7 @@ import flask_login
 from flask_bootstrap import Bootstrap5
 login_manager = flask_login.LoginManager()
 from app.simple_pages import simple_pages
+from app.recipes import recipes
 from app.auth import auth
 from app.context_processors import utility_text_processors
 
@@ -28,6 +29,7 @@ def create_app():
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.register_blueprint(simple_pages)
     app.register_blueprint(auth)
+    app.register_blueprint(recipes)
     db.init_app(app)
 
     # add command function to cli commands
