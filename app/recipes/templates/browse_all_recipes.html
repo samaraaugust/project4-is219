@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% from 'bootstrap5/table.html' import render_table %}
 {% from "bootstrap5/pagination.html" import render_pagination %}
-
-
 <div class="row col-8">
-    {% block title %}Browse: {% endblock %}
-    {% block content %}
-
+        {% block content %}
+            <h1 style="text-align:center">List of Recipes</h1>
+            <div class="links" style="display: flex; flex-direction: row; justify-content: flex-end; align-items: center">
+                <a href="{{ url_for("recipes.upload") }}" class="btn col-3 mb-5 btn-info" role="button">Add New Recipe</a>
+            </div>
         {% for sep in overall %}
-            <div class="card" style="width: 18rem;">
+            <div class="card" style="width: 18rem; margin: 20px">
                 <img class="card-img-top" src="data:;base64,{{ sep[2] }}" alt="Card image cap" width="185px" height="185px">
                 <div class="card-body">
                     <h5 class="card-title">{{ sep[0].title }}</h5>
