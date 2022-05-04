@@ -16,6 +16,16 @@ def get_img(id):
         return "no image with is", 404
     return Response(img.img, mimetype=img.mimetype)
 """
+@recipes.route('/recipes/<int:recipe_id>/delete', methods=['POST', 'GET', 'DELETE'])
+@login_required
+def delete_recipe(recipe_id):
+    recipe = Recipes.query.get(recipe_id)
+    db.session.delete(recipe)
+    db.session.commit()
+    flash('Recipe Deleted', 'success')
+    return redirect(url_for('recipes.users_recipes'), 302)
+
+
 @recipes.route('/recipes/<int:recipe_id>/edit', methods=['POST', 'GET'])
 @login_required
 def edit_new_recipe(recipe_id):

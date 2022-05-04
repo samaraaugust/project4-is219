@@ -20,6 +20,7 @@
                 <div class="card-body">
                     <a href="{{ url_for("recipes.one_recipe", recipe_id=sep[0].id) }}" class="btn btn-info" role="button">Details</a>
                     <a href="{{ url_for("recipes.edit_new_recipe", recipe_id=sep[0].id) }}" class="btn btn-info" role="button">Edit</a>
+                    <a href="{{ url_for("recipes.delete_recipe", recipe_id=sep[0].id) }}" class="btn btn-info" role="button">Delete</a>
                 </div>
             </div>
 
