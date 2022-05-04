@@ -1,11 +1,11 @@
-from flask import Blueprint, render_template, abort, Request, Response
+from flask import Blueprint, render_template, abort, Request, Response, url_for
 from flask_login import login_required, current_user
 from app.recipes.forms import new_recipe
 from app.db.models import Recipes, Image, User
 from jinja2 import TemplateNotFound
 from app.db import db
 from base64 import b64encode
-from werkzeug.utils import secure_filename
+from werkzeug.utils import secure_filename, redirect
 recipes = Blueprint('recipes', __name__,
                         template_folder='templates')
 
@@ -15,6 +15,24 @@ def get_img(id):
     if not img:
         return "no image with is", 404
     return Response(img.img, mimetype=img.mimetype)
+
+@recipes.route('/recipes/<int:recipe_id>', methods=['POST', 'GET'])
+@login_required
+def one_recipe(recipe_id):
+    data = Recipes.query.filter_by(id=recipe_id).first()
+    overall = []
+    sep = []
+    sep.append(data)
+    imageID = data.image_id
+    userID = data.user_id
+    userData = User.query.filter_by(id=userID).first()
+    sep.append(userData)
+    imageData = Image.query.filter_by(id=imageID).first()
+    pic = imageData.img
+    newImg = b64encode(pic).decode("utf-8")
+    sep.append(newImg)
+    overall.append(sep)
+    return render_template('seperate_recipe.html', overall=overall)
 
 @recipes.route('/recipes', methods=['POST', 'GET'])
 @login_required
@@ -67,6 +85,8 @@ def upload():
         db.session.add(recipe)
         current_user.recipes = current_user.recipes + [recipe]
         db.session.commit()
+
+        return redirect(url_for('recipes.browse_all_recipes'))
 
     try:
         return render_template('create_recipe.html', form=form)
