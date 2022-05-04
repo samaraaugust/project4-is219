@@ -8,13 +8,36 @@ from base64 import b64encode
 from werkzeug.utils import secure_filename, redirect
 recipes = Blueprint('recipes', __name__,
                         template_folder='templates')
-
+"""
 @recipes.route('/<int:id>', methods=['GET'])
 def get_img(id):
     img = Image.query.filter_by(id=id).first()
     if not img:
         return "no image with is", 404
     return Response(img.img, mimetype=img.mimetype)
+"""
+@recipes.route('/recipes/users', methods=['POST', 'GET'])
+@login_required
+def users_recipes():
+    idNum = User.get_id(current_user)
+    data = Recipes.query.filter_by(user_id=idNum)
+    overall = []
+    for p in data:
+        sep = []
+        sep.append(p)
+        imageID = p.image_id
+        userID = p.user_id
+        userData = User.query.filter_by(id=userID).first()
+        sep.append(userData)
+        imageData = Image.query.filter_by(id=imageID).first()
+        pic = imageData.img
+        newImg = b64encode(pic).decode("utf-8")
+        sep.append(newImg)
+        overall.append(sep)
+    try:
+        return render_template('users_recipes.html', overall=overall)
+    except TemplateNotFound:
+        abort(404)
 
 @recipes.route('/recipes/<int:recipe_id>', methods=['POST', 'GET'])
 @login_required
