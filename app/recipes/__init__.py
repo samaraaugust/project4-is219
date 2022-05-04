@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template, abort, Request, Response, url_for
+from flask import Blueprint, render_template, abort, flash, Request, Response, url_for
 from flask_login import login_required, current_user
-from app.recipes.forms import new_recipe
+from app.recipes.forms import new_recipe, edit_recipe
 from app.db.models import Recipes, Image, User
 from jinja2 import TemplateNotFound
 from app.db import db
@@ -16,6 +16,28 @@ def get_img(id):
         return "no image with is", 404
     return Response(img.img, mimetype=img.mimetype)
 """
+@recipes.route('/recipes/<int:recipe_id>/edit', methods=['POST', 'GET'])
+@login_required
+def edit_new_recipe(recipe_id):
+    recipe = Recipes.query.get(recipe_id)
+    form = edit_recipe(obj=recipe)
+    if form.validate_on_submit():
+        filename = secure_filename(form.image.data.filename)
+        mimetype = form.image.data.mimetype
+        image2 = Image(img=form.image.data.read(), name=filename, mimetype=mimetype)
+        db.session.add(image2)
+        db.session.commit()
+        imageID = image2.id
+        recipe.title = form.title.data
+        recipe.description = form.description.data
+        recipe.image_id = image2.id
+        recipe.ingredients = form.ingredients.data
+        db.session.add(recipe)
+        db.session.commit()
+        flash('Recipe Edited Successfully', 'success')
+        return redirect(url_for('recipes.users_recipes'))
+    return render_template('edit_recipe.html', form=form)
+
 @recipes.route('/recipes/users', methods=['POST', 'GET'])
 @login_required
 def users_recipes():
