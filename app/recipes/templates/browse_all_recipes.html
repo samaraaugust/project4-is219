@@ -11,11 +11,11 @@
             <div class="card" style="width: 18rem; margin: 20px">
                 <img class="card-img-top" src="data:;base64,{{ sep[2] }}" alt="Card image cap" width="185px" height="185px">
                 <div class="card-body">
-                    <h5 class="card-title">{{ sep[0].title }}</h5>
-                    <p class="card-text">{{ sep[0].description }}</p>
+                    <h5 class="card-title" style="overflow:hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 1;">{{ sep[0].title }}</h5>
+                    <p class="card-text" style="overflow:hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 1;">{{ sep[0].description }}</p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Ingredients: {{ sep[0].ingredients }}</li>
+                    <li class="list-group-item" style="overflow:hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 1;">Ingredients: {{ sep[0].ingredients }}</li>
                     <li class="list-group-item">By {{ sep[1].email }}</li>
 
                 </ul>

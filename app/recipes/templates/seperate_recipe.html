@@ -8,17 +8,16 @@
     {% block content %}
 
         {% for sep in overall %}
-            <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="data:;base64,{{ sep[2] }}" alt="Card image cap" width="185px" height="185px">
-                <div class="card-body">
-                    <h5 class="card-title">{{ sep[0].title }}</h5>
-                    <p class="card-text">{{ sep[0].description }}</p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Ingredients: {{ sep[0].ingredients }}</li>
-                    <li class="list-group-item">By {{ sep[1].email }}</li>
-
-                </ul>
+            <div class="headerPart" style="display: flex; flex-direction: column; align-items: center; justify-content: space-between">
+                <h1 style="text-align: center;">{{ sep[0].title }}</h1>
+                <img src="data:;base64,{{ sep[2] }}" alt="Card image cap" width="185px" height="185px">
+            </div>
+            <div class="recipeInfo" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between">
+                <h2>Description: </h2>
+                <p>{{ sep[0].description }}</p>
+                <h2>Ingredients: </h2>
+                <p>{{ sep[0].ingredients }}</p>
+                <h5>Created By: {{ sep[1].email }}</h5>
             </div>
 
         {% endfor %}
