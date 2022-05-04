@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, abort, Request, Response
 from flask_login import login_required, current_user
 from app.recipes.forms import new_recipe
-from app.db.models import Recipes, Image
+from app.db.models import Recipes, Image, User
 from jinja2 import TemplateNotFound
 from app.db import db
 from base64 import b64encode
@@ -20,14 +20,29 @@ def get_img(id):
 @login_required
 def browse_all_recipes():
     data = Recipes.query.all()
+    overall = []
+    for p in data:
+        sep = []
+        sep.append(p)
+        imageID = p.image_id
+        userID = p.user_id
+        userData = User.query.filter_by(id=userID).first()
+        sep.append(userData)
+        imageData = Image.query.filter_by(id=imageID).first()
+        pic = imageData.img
+        newImg = b64encode(pic).decode("utf-8")
+        sep.append(newImg)
+        overall.append(sep)
+    """
     image_data = Image.query.all()
     list_info = []
     for i in image_data:
         pic = i.img
-        newImg = b64encode(pic).decode("utf-8")
-        list_info.append(newImg)
+        newImg2 = b64encode(pic).decode("utf-8")
+        list_info.append(newImg2)
+    """
     try:
-        return render_template('browse_all_recipes.html', data=data, image_data=image_data, list_info=list_info)
+        return render_template('browse_all_recipes.html', overall=overall)
     except TemplateNotFound:
         abort(404)
 

@@ -7,16 +7,16 @@
     {% block title %}Browse: {% endblock %}
     {% block content %}
 
-        {% for info in data %}
+        {% for sep in overall %}
             <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="data:;base64,{{ list_info[info.image_id - 1] }}" alt="Card image cap" width="185px" height="185px">
+                <img class="card-img-top" src="data:;base64,{{ sep[2] }}" alt="Card image cap" width="185px" height="185px">
                 <div class="card-body">
-                    <h5 class="card-title">{{ info.title }}</h5>
-                    <p class="card-text">{{ info.description }}</p>
+                    <h5 class="card-title">{{ sep[0].title }}</h5>
+                    <p class="card-text">{{ sep[0].description }}</p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Ingredients: {{ info.ingredients }}</li>
-                    <li class="list-group-item">By ...</li>
+                    <li class="list-group-item">Ingredients: {{ sep[0].ingredients }}</li>
+                    <li class="list-group-item">By {{ sep[1].email }}</li>
 
                 </ul>
                 <div class="card-body">
