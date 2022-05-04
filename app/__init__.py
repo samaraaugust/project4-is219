@@ -10,6 +10,7 @@ from flask_bootstrap import Bootstrap5
 from app.simple_pages import simple_pages
 from app.recipes import recipes
 from app.auth import auth
+from app.logging_config import log_con
 from app.context_processors import utility_text_processors
 
 login_manager = flask_login.LoginManager()
@@ -42,6 +43,7 @@ def create_app():
     app.register_blueprint(database)
     app.register_blueprint(auth)
     app.register_blueprint(recipes)
+    app.register_blueprint(log_con)
     db.init_app(app)
 
     # add command function to cli commands
