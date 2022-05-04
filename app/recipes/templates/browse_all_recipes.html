@@ -8,16 +8,22 @@
     {% block content %}
 
         {% for info in data %}
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="data:;base64,{{ list_info[info.image_id - 1] }}" alt="Card image cap" width="185px" height="185px">
+                <div class="card-body">
+                    <h5 class="card-title">{{ info.title }}</h5>
+                    <p class="card-text">{{ info.description }}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Ingredients: {{ info.ingredients }}</li>
+                    <li class="list-group-item">By ...</li>
 
-            <div class="info">
-                <h4> Recipe Title: {{ info.title }}</h4>
-                <h4> Recipe Description: {{ info.description }}</h4>
-                <h4> Recipe Ingredients: {{ info.ingredients }}</h4>
-                <h4> Recipe Image ID: {{ info.image_id }}</h4>
-                <div>
-                    <img src="data:;base64,{{ list_info[info.image_id - 1] }}" width="185px" height="185px">
+                </ul>
+                <div class="card-body">
+                    <a href="#" class="card-link">Details</a>
                 </div>
             </div>
+
         {% endfor %}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
