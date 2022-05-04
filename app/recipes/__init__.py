@@ -4,6 +4,7 @@ from app.recipes.forms import new_recipe
 from app.db.models import Recipes, Image
 from jinja2 import TemplateNotFound
 from app.db import db
+from base64 import b64encode
 from werkzeug.utils import secure_filename
 recipes = Blueprint('recipes', __name__,
                         template_folder='templates')
@@ -14,6 +15,23 @@ def get_img(id):
     if not img:
         return "no image with is", 404
     return Response(img.img, mimetype=img.mimetype)
+
+@recipes.route('/recipes', methods=['POST', 'GET'])
+@login_required
+def browse_all_recipes():
+    data = Recipes.query.all()
+    image_data = Image.query.all()
+    list_info = []
+    for i in image_data:
+        pic = i.img
+        newImg = b64encode(pic).decode("utf-8")
+        list_info.append(newImg)
+    try:
+        return render_template('browse_all_recipes.html', data=data, image_data=image_data, list_info=list_info)
+    except TemplateNotFound:
+        abort(404)
+
+
 
 @recipes.route('/create', methods=['POST', 'GET'])
 @login_required

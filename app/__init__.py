@@ -6,14 +6,18 @@ from app.db import db
 from app.db.models import User
 import flask_login
 from flask_bootstrap import Bootstrap5
-login_manager = flask_login.LoginManager()
+
 from app.simple_pages import simple_pages
 from app.recipes import recipes
 from app.auth import auth
 from app.context_processors import utility_text_processors
 
+login_manager = flask_login.LoginManager()
+
+
 def page_not_found(e):
     return render_template("404.html"), 404
+
 
 def create_app():
     """Create and configure an instance of the Flask application."""
@@ -34,10 +38,8 @@ def create_app():
 
     # add command function to cli commands
     app.cli.add_command(create_database)
-
-
-
     return app
+
 
 @login_manager.user_loader
 def user_loader(user_id):
