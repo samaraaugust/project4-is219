@@ -2,10 +2,10 @@
 {% block content %}
     {% from 'bootstrap5/form.html' import render_form, render_field, render_form_row %}
 
-    <div class="row">
+<!-- Modal -->
 
          <div class="mx-auto">
-             <h2>Recipes</h2>
+             <h1 style="text-align: center">Results For: {{ search_value }}</h1>
             <div id="recipeList"></div>
          </div>
     </div>
@@ -13,7 +13,7 @@
     <script>
         $(document).ready(function(){
         $.ajax({
-            url: "https://api.spoonacular.com/recipes/complexSearch?apiKey={{food_api_key}}&query={{ search_value }}&number=2&addRecipeInformation=true&fillIngredients=true",
+            url: "https://api.spoonacular.com/recipes/complexSearch?apiKey={{food_api_key}}&query={{ search_value }}&number=10&addRecipeInformation=true&fillIngredients=true",
             type: "GET",
             success: function(result){
 
@@ -22,22 +22,79 @@
                 for (let i = 0, len = results.length; i < len; i++) {
                     console.log(results[i].title);
                     var recipeList = document.getElementById("recipeList");
-                    recipeList.innerHTML += `<h2>${results[i].title}</h2><img src=${results[i].image} alt='food pic'></img>
-<h3>Desciption: </h3><p>${results[i].summary}</p><h2>Ingredients: </h2`;
+                    var ingList = [];
                     var ingredients = results[i].extendedIngredients;
                     for (let p = 0, len = ingredients.length; p < len; p++) {
-                        recipeList.innerHTML += `<p>${ingredients[p].name}</p>`;
+                        ingList += `<p>${ingredients[p].name}</p>`;
                     }
-                    recipeList.innerHTML += `<h2>Steps: </h2>`;
                     var steps = results[i].analyzedInstructions[0].steps;
-                    console.log(steps)
+                    var stepsList = [];
                     for (let g = 0, len = steps.length; g < len; g++) {
-                        recipeList.innerHTML += `<p>${steps[g].step}</p>`;
+                        stepsList += `<p>${steps[g].step}</p>`;
                     }
+                    recipeList.innerHTML += `<div class="sepRecipe"><h2>${results[i].title}</h2><img src=${results[i].image} alt='food pic'></img><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal${i}">
+                    View Details
+                </button> </div>`
+                    recipeList.innerHTML += `<div class="row">
+            <div class="modal fade" id="exampleModal${i}" tabindex="-1" aria-labelledby="exampleModalLabel${i}}" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel${i}">${results[i].title}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <h1>${results[i].title}</h1>
+                <img src=${results[i].image} alt='food pic'></img>
+                    <h2>Description: </h2>
+                    <p>${results[i].summary}</p>
+                    <h2> Ingredients: </h2>
+                    <p>${ingList}</p>
+                    <h2>Steps: </h2>
+                    <p>${stepsList}</p>
+
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>`;
                 }
             }
         })
         })
     </script>
+
+    <style>
+        img {
+            width: 185px;
+            height: 185px;
+        }
+        #recipeList {
+            display: flex;
+            flex-direction: row;
+            max-width: 720px;
+            margin: auto;
+        }
+        .sepRecipe {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px;
+            border: 1px solid black;
+            border-radius: 6px;
+        }
+
+        .sepRecipe h2 {
+            margin-bottom: 10px;
+        }
+
+        .sepRecipe button {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
 
 {% endblock %}
