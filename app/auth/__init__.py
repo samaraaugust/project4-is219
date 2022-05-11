@@ -8,40 +8,6 @@ from app.db.models import User
 
 auth = Blueprint('auth', __name__, template_folder='templates')
 
-@auth.route('/login2', methods=['POST', 'GET'])
-def login2():
-    form = login_form()
-    if current_user.is_authenticated:
-        return redirect(url_for('auth.dashboard'))
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
-            return redirect(url_for('auth.login2'))
-        else:
-            user.authenticated = True
-            db.session.add(user)
-            db.session.commit()
-            login_user(user)
-            flash("Welcome", 'success')
-            return redirect(url_for('auth.dashboard'))
-    form2 = register_form()
-    if form2.validate_on_submit():
-        user = User.query.filter_by(email=form2.email.data).first()
-        if user is None:
-            user = User(email=form2.email.data, password=generate_password_hash(form2.password.data))
-            db.session.add(user)
-            db.session.commit()
-            if user.id == 1:
-                user.is_admin = 1
-                db.session.add(user)
-                db.session.commit()
-            flash('Congratulations, you are now a registered user!', "success")
-            return redirect(url_for('auth.login2'), 302)
-        else:
-            flash('Already Registered')
-            return redirect(url_for('auth.login2'), 302)
-    return render_template('second_login.html', form=form, form2=form2)
 
 @auth.route('/register', methods=['POST', 'GET'])
 def register():
