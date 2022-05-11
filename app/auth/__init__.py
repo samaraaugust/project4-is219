@@ -25,7 +25,23 @@ def login2():
             login_user(user)
             flash("Welcome", 'success')
             return redirect(url_for('auth.dashboard'))
-    return render_template('second_login.html', form=form)
+    form2 = register_form()
+    if form2.validate_on_submit():
+        user = User.query.filter_by(email=form2.email.data).first()
+        if user is None:
+            user = User(email=form2.email.data, password=generate_password_hash(form2.password.data))
+            db.session.add(user)
+            db.session.commit()
+            if user.id == 1:
+                user.is_admin = 1
+                db.session.add(user)
+                db.session.commit()
+            flash('Congratulations, you are now a registered user!', "success")
+            return redirect(url_for('auth.login2'), 302)
+        else:
+            flash('Already Registered')
+            return redirect(url_for('auth.login2'), 302)
+    return render_template('second_login.html', form=form, form2=form2)
 
 @auth.route('/register', methods=['POST', 'GET'])
 def register():
