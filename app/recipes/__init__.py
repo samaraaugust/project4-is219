@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template, abort, flash, Request, Response, url_for
+from flask import Blueprint, render_template,current_app,abort, flash, Request, Response, url_for
 from flask_login import login_required, current_user
-from app.recipes.forms import new_recipe, edit_recipe
+from app.recipes.forms import new_recipe, edit_recipe, search_food
 from app.db.models import Recipes, Image, User
 from jinja2 import TemplateNotFound
 from app.db import db
@@ -16,6 +16,20 @@ def get_img(id):
         return "no image with is", 404
     return Response(img.img, mimetype=img.mimetype)
 """
+@recipes.route('/recipes/search', methods=['GET', 'POST'])
+@login_required
+def search_for_recipes():
+    food_api_key = current_app.config.get('FOOD_API_KEY')
+    form = search_food()
+    if form.validate_on_submit():
+        search_value = form.search.data
+        return render_template('browse_search.html', food_api_key=food_api_key,
+                               search_value=search_value)
+    try:
+        return render_template('search_api_recipes.html', form=form)
+    except TemplateNotFound:
+        abort(404)
+
 @recipes.route('/recipes/<int:recipe_id>/delete', methods=['POST', 'GET', 'DELETE'])
 @login_required
 def delete_recipe(recipe_id):

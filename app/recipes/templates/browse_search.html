@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+    {% from 'bootstrap5/form.html' import render_form, render_field, render_form_row %}
+
+    <div class="row">
+
+         <div class="mx-auto">
+             <h2>Recipes</h2>
+            <div id="recipeList"></div>
+         </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+        $.ajax({
+            url: "https://api.spoonacular.com/recipes/complexSearch?apiKey={{food_api_key}}&query={{ search_value }}&number=2&addRecipeInformation=true&fillIngredients=true",
+            type: "GET",
+            success: function(result){
+
+                var results = result.results;
+                console.log(results);
+                for (let i = 0, len = results.length; i < len; i++) {
+                    console.log(results[i].title);
+                    var recipeList = document.getElementById("recipeList");
+                    recipeList.innerHTML += `<h2>${results[i].title}</h2><img src=${results[i].image} alt='food pic'></img>
+<h3>Desciption: </h3><p>${results[i].summary}</p><h2>Ingredients: </h2`;
+                    var ingredients = results[i].extendedIngredients;
+                    for (let p = 0, len = ingredients.length; p < len; p++) {
+                        recipeList.innerHTML += `<p>${ingredients[p].name}</p>`;
+                    }
+                    recipeList.innerHTML += `<h2>Steps: </h2>`;
+                    var steps = results[i].analyzedInstructions[0].steps;
+                    console.log(steps)
+                    for (let g = 0, len = steps.length; g < len; g++) {
+                        recipeList.innerHTML += `<p>${steps[g].step}</p>`;
+                    }
+                }
+            }
+        })
+        })
+    </script>
+
+{% endblock %}
