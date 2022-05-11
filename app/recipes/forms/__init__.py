@@ -15,3 +15,7 @@ class edit_recipe(FlaskForm):
     ingredients = TextAreaField('Ingredients', [validators.length(min=1, max=300)])
     image = FileField('Image')
     submit = SubmitField()
+
+class search_food(FlaskForm):
+    search = TextAreaField('Search', [validators.length(min=1, max=300)])
+    submit = SubmitField()
