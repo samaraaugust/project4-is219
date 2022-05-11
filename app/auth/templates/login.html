@@ -3,11 +3,13 @@
 
     <div class="row mt-5">
 
-         <div class="col-4 border border-1 border-dark mx-auto p-4">
-             <h2>Login</h2>
+         <div class="col-4 border border-1 border-dark mx-auto p-4 loginForm">
+             <h2 style="text-align: center">Login</h2>
              {{ render_form(form) }}
+
+             <input type="checkbox" onclick="seePassword()" id="checkboxS">Show Password
          </div>
-    <div id="message" class="col-5" style="display: none">
+    <div id="message" class="col-5">
             <div id="letter" class="red">
                 Password Checker
                 <div class="progress">
@@ -39,6 +41,30 @@
 
         .valid {
             color: green;
+        }
+
+        body {
+            background: linear-gradient(45deg, rgba(66, 183, 245, 0.8) 0%, rgba(66, 245, 189, 0.4) 100%);
+        }
+
+        .loginForm {
+            background: lightblue;
+            opacity: .9;
+            border-radius: 6px;
+            filter: drop-shadow(4px 8px 8px rgba(0,0,0,.75))
+        }
+
+        #message {
+            display: none;
+            background: ghostwhite;
+            opacity: .9;
+            border-radius: 6px;
+            filter: drop-shadow(4px 8px 8px rgba(0,0,0,.75));
+            padding: 10px;
+        }
+
+        #checkboxS {
+            margin-top: 20px;
         }
     </style>
     <script>
@@ -178,6 +204,13 @@
             }
         }
 
-
+        function seePassword() {
+          var x = document.getElementById("password");
+          if (x.type === "password") {
+            x.type = "text";
+          } else {
+            x.type = "password";
+          }
+        }
     </script>
 {% endblock %}

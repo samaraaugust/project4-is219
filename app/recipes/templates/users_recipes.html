@@ -3,7 +3,7 @@
 {% from "bootstrap5/pagination.html" import render_pagination %}
 <div class="row col-8">
         {% block content %}
-            <h1 style="text-align:center">List of Recipes</h1>
+            <h1 style="text-align:center">Your Recipes</h1>
             <div class="links" style="display: flex; flex-direction: row; justify-content: flex-end; align-items: center">
                 <a href="{{ url_for("recipes.upload") }}" class="btn col-3 mb-5 btn-info" role="button">Add New Recipe</a>
             </div>
@@ -14,13 +14,13 @@
                     <h5 class="card-title" style="overflow:hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 1;">{{ sep[0].title }}</h5>
 {#                    <p class="card-text" style="overflow:hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 1;">{{ sep[0].description }}</p>#}
                 </div>
-                <ul class="list-group list-group-flush">
+{#                <ul class="list-group list-group-flush">#}
 {#                    <li class="list-group-item" style="overflow:hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 1;">Ingredients: {{ sep[0].ingredients }}</li>#}
-                    <li class="list-group-item">By {{ sep[1].email }}</li>
-
-                </ul>
+{#                </ul>#}
                 <div class="card-body">
-                    <a href="{{ url_for("recipes.one_recipe", recipe_id=sep[0].id) }}" class="btn btn-info" role="button">View Details</a>
+                    <a href="{{ url_for("recipes.one_recipe", recipe_id=sep[0].id) }}" class="btn btn-info" role="button">Details</a>
+                    <a href="{{ url_for("recipes.edit_new_recipe", recipe_id=sep[0].id) }}" class="btn btn-info" role="button">Edit</a>
+                    <a href="{{ url_for("recipes.delete_recipe", recipe_id=sep[0].id) }}" class="btn btn-info" role="button">Delete</a>
                 </div>
             </div>
 

@@ -8,7 +8,7 @@ from sqlalchemy.orm import relationship
 class Image(db.Model):
     __tablename__ = 'image'
     id = db.Column(db.Integer, primary_key=True)
-    img = db.Column(db.Text, unique=True, nullable=False)
+    img = db.Column(db.Text, unique=False, nullable=False)
     name = db.Column(db.Text, nullable=False)
     mimetype = db.Column(db.Text, nullable=False)
     recipes = db.relationship("Recipes", back_populates="image", cascade="all, delete")
