@@ -13,7 +13,7 @@
     <script>
         $(document).ready(function(){
         $.ajax({
-            url: "https://api.spoonacular.com/recipes/complexSearch?apiKey={{food_api_key}}&query={{ search_value }}&number=10&addRecipeInformation=true&fillIngredients=true",
+            url: "https://api.spoonacular.com/recipes/complexSearch?apiKey={{food_api_key}}&query={{ search_value }}&number=6&addRecipeInformation=true&fillIngredients=true",
             type: "GET",
             success: function(result){
 
@@ -74,6 +74,7 @@
         #recipeList {
             display: flex;
             flex-direction: row;
+            flex-wrap: wrap;
             max-width: 720px;
             margin: auto;
         }
@@ -85,10 +86,12 @@
             margin: 20px;
             border: 1px solid black;
             border-radius: 6px;
+            max-width: 200px;
         }
 
         .sepRecipe h2 {
             margin-bottom: 10px;
+            {#overflow:hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 1;#}
         }
 
         .sepRecipe button {
